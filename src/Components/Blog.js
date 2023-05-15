@@ -21,12 +21,16 @@ export default function Blog() {
 
         /*we can setBlogs in both the ways */
         // setBlogs([formData, ...blogs]);
-        setBlogs([{ title:formData.title, content: formData.content }, ...blogs]);
+        setBlogs([{ title: formData.title, content: formData.content }, ...blogs]);
 
 
         setFormData({ title: "", content: "" });
     }
 
+
+    function removeBlog(i){
+        setBlogs(blogs.filter((blog,index)=>i!==index));
+    }
 
 
     return (
@@ -45,7 +49,7 @@ export default function Blog() {
                         <input className="input"
                             placeholder="Enter the Title of the Blog here.."
                             value={formData.title}
-                            onChange={(e) => setFormData({title:e.target.value, content:formData.content})}
+                            onChange={(e) => setFormData({ title: e.target.value, content: formData.content })}
                         />
                     </Row >
 
@@ -54,7 +58,7 @@ export default function Blog() {
                         <textarea className="input content"
                             placeholder="Content of the Blog goes here.."
                             value={formData.content}
-                            onChange={(e) => setFormData({title:formData.title, content:e.target.value})}
+                            onChange={(e) => setFormData({ title: formData.title, content: e.target.value })}
                         />
                     </Row >
 
@@ -70,10 +74,19 @@ export default function Blog() {
             <h2> Blogs </h2>
 
             {blogs.map((blog, i) => (
+
                 <div className="blog" keys={i}>
                     <h3>{blog.title}</h3>
                     <p>{blog.content}</p>
+
+                    <div className="blog-btn">
+                        <button onClick={()=>removeBlog(i)}>
+                            Delete
+                        </button>
+                    </div>
+
                 </div>
+
             ))}
 
         </>
