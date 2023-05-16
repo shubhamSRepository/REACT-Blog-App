@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 //Blogging App using Hooks
 export default function Blog() {
@@ -12,7 +12,12 @@ export default function Blog() {
 
 
     const [blogs, setBlogs] = useState([]);
+    const titleRef= useRef(null);
 
+    /*this 'use effect' will set focus on 'title' on mount that is on first render  */
+    useEffect(()=>{
+        titleRef.current.focus();
+    },[])
 
 
     //Passing the synthetic event as argument to stop refreshing the page on submit
@@ -23,8 +28,8 @@ export default function Blog() {
         // setBlogs([formData, ...blogs]);
         setBlogs([{ title: formData.title, content: formData.content }, ...blogs]);
 
-
         setFormData({ title: "", content: "" });
+        titleRef.current.focus();  /*this will set focus on title after first render that is when add button is clicked */
     }
 
 
@@ -49,6 +54,7 @@ export default function Blog() {
                         <input className="input"
                             placeholder="Enter the Title of the Blog here.."
                             value={formData.title}
+                            ref={titleRef}
                             onChange={(e) => setFormData({ title: e.target.value, content: formData.content })}
                         />
                     </Row >
@@ -80,7 +86,7 @@ export default function Blog() {
                     <p>{blog.content}</p>
 
                     <div className="blog-btn">
-                        <button onClick={()=>removeBlog(i)}>
+                        <button onClick={()=>removeBlog(i)} className="remove">
                             Delete
                         </button>
                     </div>
