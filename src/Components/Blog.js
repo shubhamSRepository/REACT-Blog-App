@@ -12,12 +12,24 @@ export default function Blog() {
 
 
     const [blogs, setBlogs] = useState([]);
-    const titleRef= useRef(null);
+    const titleRef = useRef(null);
+
+
 
     /*this 'use effect' will set focus on 'title' on mount that is on first render  */
-    useEffect(()=>{
+    useEffect(() => {
         titleRef.current.focus();
-    },[])
+    }, [])
+
+
+
+    /*this 'use effect' is updating document.title */
+    useEffect(() => {
+        if (blogs.length) {
+            document.title = blogs[0].title;
+        }
+    }, [blogs])
+
 
 
     //Passing the synthetic event as argument to stop refreshing the page on submit
@@ -33,9 +45,11 @@ export default function Blog() {
     }
 
 
-    function removeBlog(i){
-        setBlogs(blogs.filter((blog,index)=>i!==index));
+
+    function removeBlog(i) {
+        setBlogs(blogs.filter((blog, index) => i !== index));
     }
+
 
 
     return (
@@ -55,6 +69,7 @@ export default function Blog() {
                             placeholder="Enter the Title of the Blog here.."
                             value={formData.title}
                             ref={titleRef}
+                            required
                             onChange={(e) => setFormData({ title: e.target.value, content: formData.content })}
                         />
                     </Row >
@@ -64,6 +79,7 @@ export default function Blog() {
                         <textarea className="input content"
                             placeholder="Content of the Blog goes here.."
                             value={formData.content}
+                            required
                             onChange={(e) => setFormData({ title: formData.title, content: e.target.value })}
                         />
                     </Row >
@@ -86,7 +102,7 @@ export default function Blog() {
                     <p>{blog.content}</p>
 
                     <div className="blog-btn">
-                        <button onClick={()=>removeBlog(i)} className="remove">
+                        <button onClick={() => removeBlog(i)} className="remove">
                             Delete
                         </button>
                     </div>
@@ -98,6 +114,8 @@ export default function Blog() {
         </>
     )
 }
+
+
 
 //Row component to introduce a new row section in the form
 function Row(props) {
